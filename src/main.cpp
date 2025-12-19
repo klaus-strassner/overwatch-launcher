@@ -10,12 +10,14 @@ using std::cerr;
 using std::endl;
 
 const LPCTSTR path { TEXT("Overwatch_Original.exe") };
-const DWORD_PTR processAffinity {0b111111111100};
-const DWORD_PTR mainThreadAffinity {0b000000000100};
-const DWORD_PTR backgroundThreadAffinity {0b111111111000};
+const DWORD_PTR processAffinity {0b11111100};
+const DWORD_PTR mainThreadAffinity {0b00000100};
+const DWORD_PTR heavyThreadAffinity {0b00001000};
+const DWORD_PTR backgroundThreadAffinity {0b11110000};
 
 int main() {
     Launcher owLauncher;
+    std::map<DWORD, ULONGLONG> previousSnapshot;
 
     SetCompatibilityFlags(path);
 
@@ -28,7 +30,9 @@ int main() {
     DisableCrashReporting();
 
     while(true) {
-        SetBackgroundThreadAffinity(owLauncher.GetProcessInformation(), backgroundThreadAffinity);
+        DWORD heaviestThreadId = PinHeaviestsBackgroundThread(owLauncher.GetProcessInformation(),0b00001000, previousSnapshot);
+
+        SetBackgroundThreadAffinity(owLauncher.GetProcessInformation(), backgroundThreadAffinity, heaviestThreadId);
         Sleep(10000);
     }
 

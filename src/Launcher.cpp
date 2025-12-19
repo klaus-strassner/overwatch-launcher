@@ -14,8 +14,8 @@ Launcher::~Launcher() {
 }
 
 bool Launcher::StartGameSuspended(LPCTSTR path) {
-    TCHAR cmdArgs[] = TEXT(" --tank_WorkerThreadCount 0 --tank_MinWorkerThreadCount 0 --tank_MaxWorkerThreadCount 0");
-
+    TCHAR cmdArgs[] = TEXT("");
+    // --tank_WorkerThreadCount 0 --tank_MinWorkerThreadCount 0 --tank_MaxWorkerThreadCount 0
     cout << "[+] Attempting to launch " << path << endl;
 
     // Launch Game suspended
